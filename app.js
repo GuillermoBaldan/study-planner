@@ -114,4 +114,25 @@ let chapter5 = [
   "1 Pedro 5:14",
 ];
 
-let bookOf1Peter = chapter1 + chapter2 + chapter3 + chapter4 + chapter5;
+let bookOf1Peter = chapter1.concat(chapter2, chapter3, chapter4, chapter5);
+console.log(typeof bookOf1Peter);
+console.log(bookOf1Peter.length);
+console.log(bookOf1Peter);
+
+function plannerDays(arrayOfitems, numberOfDays) {
+  let aux = [];
+  let i;
+  let j;
+  for (i = 0; i < numberOfDays; i++) {
+    aux.push({ day: i, items: [] });
+  }
+  for (i = 0; i < arrayOfitems.length; i++) {
+    for (j = 0; j < numberOfDays; j * 2) {
+      //Algoritmo de refuerzo
+      aux[i + j].items.push(arrayOfitems[i]);
+    }
+  }
+  return aux;
+}
+
+console.log(plannerDays(bookOf1Peter, 105));
