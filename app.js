@@ -115,9 +115,9 @@ let chapter5 = [
 ];
 
 let bookOf1Peter = chapter1.concat(chapter2, chapter3, chapter4, chapter5);
-console.log(typeof bookOf1Peter);
+/* console.log(typeof bookOf1Peter);
 console.log(bookOf1Peter.length);
-console.log(bookOf1Peter);
+console.log(bookOf1Peter); */
 
 function plannerDays(arrayOfitems, numberOfDays) {
   let aux = [];
@@ -130,6 +130,9 @@ function plannerDays(arrayOfitems, numberOfDays) {
     for (j = 0; j < numberOfDays; j * 2) {
       //Algoritmo de refuerzo
       aux[i + j].items.push(arrayOfitems[i]);
+      if ((j = 0)) {
+        j++;
+      }
     }
   }
   return aux;
