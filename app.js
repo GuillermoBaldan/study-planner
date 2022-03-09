@@ -1,3 +1,5 @@
+var fs = require("fs");
+
 let chapter1 = [
   "1 Pedro 1:1",
   "1 Pedro 1:2",
@@ -119,23 +121,75 @@ let bookOf1Peter = chapter1.concat(chapter2, chapter3, chapter4, chapter5);
 console.log(bookOf1Peter.length);
 console.log(bookOf1Peter); */
 
+let workByday = [];
+
 function plannerDays(arrayOfitems, numberOfDays) {
   let aux = [];
   let i;
-  let j;
-  for (i = 0; i < numberOfDays; i++) {
+  let j = 0;
+  for (i = 1; i <= numberOfDays; i++) {
     aux.push({ day: i, items: [] });
   }
   for (i = 0; i < arrayOfitems.length; i++) {
-    for (j = 0; j < numberOfDays; j * 2) {
-      //Algoritmo de refuerzo
+    while (j < numberOfDays && i + j < numberOfDays) {
       aux[i + j].items.push(arrayOfitems[i]);
-      if ((j = 0)) {
+      if (j == 0) {
         j++;
+      } else {
+        j = 2 * j;
       }
     }
+    j = 0;
   }
   return aux;
 }
 
-console.log(plannerDays(bookOf1Peter, 105));
+function statistics(workByDay) {
+  let maxWorkDay = { day: 0, number: 0 };
+  let i;
+  let report;
+  for (i = 0; i < workByDay.length; i++) {
+    if (workByDay[i].items.length > maxWorkDay) {
+      maxWorkDay = { day: i, number: workByDay[i].items.length };
+    }
+  }
+  report = `The maximum number of items in a day is ${maxWorkDay.number} and its day is ${maxWorkDay.day}`;
+  return report;
+}
+
+workByDay = plannerDays(bookOf1Peter, bookOf1Peter.length);
+
+//save in a text file using fs
+fs.writeFile(
+  "./1peterWorkByDay.txt",
+  JSON.stringify(workByDay),
+  function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("file saved");
+    }
+  }
+);
+
+//save in a json file using fs
+fs.writeFile(
+  "./1peterWorkByDay.json",
+  JSON.stringify(workByDay),
+  function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("file saved");
+    }
+  }
+);
+
+//save in a text file using fs the report
+fs.writeFile("./1peterReport.txt", statistics(workByDay), function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("file saved");
+  }
+});
