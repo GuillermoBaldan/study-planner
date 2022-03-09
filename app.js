@@ -150,46 +150,88 @@ function statistics(workByDay) {
   let report;
   for (i = 0; i < workByDay.length; i++) {
     if (workByDay[i].items.length > maxWorkDay.number) {
-      maxWorkDay = { day: i, number: workByDay[i].items.length };
+      maxWorkDay = { day: workByDay[i].day, number: workByDay[i].items.length };
     }
   }
   report = `The maximum number of items in a day is ${maxWorkDay.number} and its day is ${maxWorkDay.day}`;
   return report;
 }
 
-workByDay = plannerDays(bookOf1Peter, bookOf1Peter.length);
+function putDate(workByDay) {
+  let i;
+  let j;
+  let date;
+  for (i = 0; i < workByDay.length; i++) {
+    date = new Date();
+    date.setDate(date.getDate() + i);
+    workByDay[i].day =
+      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    console.log(workByDay[i].day);
+  }
+  return workByDay;
+}
 
-//save in a text file using fs
-fs.writeFile(
-  "./1peterWorkByDay.txt",
-  JSON.stringify(workByDay),
-  function (err) {
+/* workByDay = plannerDays(bookOf1Peter, bookOf1Peter.length);
+workByDay = putDate(workByDay);
+console.log(workByday); */
+
+function save(workByDay) {
+  //save in a text file using fs
+  fs.writeFile(
+    "./1peterWorkByDay.txt",
+    JSON.stringify(workByDay),
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("file saved");
+      }
+    }
+  );
+  //save in a json file using fs
+  fs.writeFile(
+    "./1peterWorkByDay.json",
+    JSON.stringify(workByDay),
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("file saved");
+      }
+    }
+  );
+  //save in a text file using fs the report
+  fs.writeFile("./1peterReport.txt", statistics(workByDay), function (err) {
     if (err) {
       console.log(err);
     } else {
       console.log("file saved");
     }
-  }
-);
+  });
+}
 
-//save in a json file using fs
-fs.writeFile(
-  "./1peterWorkByDay.json",
-  JSON.stringify(workByDay),
-  function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("file saved");
-    }
-  }
-);
+function falloCallback(error) {
+  console.log("Error generando reporte" + error);
+}
 
-//save in a text file using fs the report
-fs.writeFile("./1peterReport.txt", statistics(workByDay), function (err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("file saved");
-  }
+function hazPrimero(arrayOfitems, numberOfDays, callback) {
+  let workByDay = plannerDays(arrayOfitems, numberOfDays);
+  callback(workByDay);
+}
+
+function hazSegundo(workByDay, callback) {
+  workByDay = putDate(workByDay);
+  callback(workByDay);
+}
+
+function hazTercero(workByDay, callback) {
+  callback(workByDay);
+}
+
+hazPrimero(bookOf1Peter, bookOf1Peter.length, function (workByDay) {
+  hazSegundo(workByDay, function (workByDay) {
+    hazTercero(workByDay, function (workByDay) {
+      save(workByDay);
+    });
+  });
 });
