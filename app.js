@@ -149,7 +149,7 @@ function statistics(workByDay) {
   let i;
   let report;
   for (i = 0; i < workByDay.length; i++) {
-    if (workByDay[i].items.length > maxWorkDay) {
+    if (workByDay[i].items.length > maxWorkDay.number) {
       maxWorkDay = { day: i, number: workByDay[i].items.length };
     }
   }
